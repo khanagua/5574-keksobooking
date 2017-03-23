@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Виктория Ханагуа](https://up.htmlacademy.ru/javascript/9/user/5574).
-* Наставник: `Неизвестно`.
+* Наставник: [Николай Толочный](https://up.htmlacademy.ru/javascript/9/user/20137).
 
 ---
 
