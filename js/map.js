@@ -9,14 +9,13 @@ var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var NUMBER_ADVERT = 8;  // количество объявлений
 
 /**
-* Получить рандомное целое число
+* Получить случайное число в промежутке [min, max]
 * @param {Number} min минимальное число
 * @param {Number} max максимально число
 * @return {Number}
 */
 function getRandomNumber(min, max) {
-  var randomNumber = Math.floor(Math.random() * (max - min)) + min;
-  return randomNumber;
+  return Math.floor(Math.random() * ((max + 1) - min)) + min;
 }
 
 /**
@@ -25,7 +24,7 @@ function getRandomNumber(min, max) {
 * @return {object}
 */
 function getElementWithoutRepeat(array) {
-  var randomIndex = getRandomNumber(0, array.length);
+  var randomIndex = getRandomNumber(0, array.length - 1);
   var randomElement = array[randomIndex];
   array.splice(randomIndex, 1);
   return randomElement;
@@ -33,7 +32,7 @@ function getElementWithoutRepeat(array) {
 
 /**
 * Получить массив рандомной длины из рандомных неповторяющихся элементов
-* @param {object} array массив данных
+* @param {string[]} array массив данных
 * @return {object}
 */
 function getArrayRandomElement(array) {
@@ -47,28 +46,31 @@ function getArrayRandomElement(array) {
 
 /**
 * Получить массив одного объявления
-* @return {object}
+* @return {object[]}
 */
 function getAdverts() {
-  var advertItems = {};
-  advertItems.author = {};
-  advertItems.author.avatar = 'img/avatars/user' + getElementWithoutRepeat(AVATARS) + '.png';
-  advertItems.location = {};
-  advertItems.location.x = getRandomNumber(300, 900);
-  advertItems.location.y = getRandomNumber(100, 500);
-  advertItems.offer = {};
-  advertItems.offer.title = getElementWithoutRepeat(TITLES);
-  advertItems.offer.address = (advertItems.location.x + ', ' + advertItems.location.y);
-  advertItems.offer.price = getRandomNumber(1000, 1000000);
-  advertItems.offer.type = TYPES[getRandomNumber(0, TYPES.length)];
-  advertItems.offer.rooms = getRandomNumber(1, 5);
-  advertItems.offer.guests = getRandomNumber(1, 100);
-  advertItems.offer.checkin = CHECKIN[getRandomNumber(0, CHECKIN.length)];
-  advertItems.offer.checkout = CHECKOUT[getRandomNumber(0, CHECKOUT.length)];
-  advertItems.offer.features = getArrayRandomElement(FEATURES);
-  advertItems.offer.description = '';
-  advertItems.offer.photos = [];
-  return advertItems;
+  return {
+    author: {
+      avatar: 'img/avatars/user' + getElementWithoutRepeat(AVATARS) + '.png',
+    },
+    location: {
+      x: getRandomNumber(300, 900),
+      y: getRandomNumber(100, 500),
+    },
+    offer: {
+      title: getElementWithoutRepeat(TITLES),
+      address: (location.x + ', ' + location.y),
+      price: getRandomNumber(1000, 1000000),
+      type: TYPES[getRandomNumber(0, TYPES.length - 1)],
+      rooms: getRandomNumber(1, 5),
+      guests: getRandomNumber(1, 100),
+      checkin: CHECKIN[getRandomNumber(0, CHECKIN.length - 1)],
+      checkout: CHECKOUT[getRandomNumber(0, CHECKOUT.length - 1)],
+      features: getArrayRandomElement(FEATURES),
+      description: '',
+      photos: [],
+    },
+  };
 }
 
 /**
@@ -90,11 +92,11 @@ var adverts = creatAdvertArr();
 var parentForPins = document.querySelector('.tokyo__pin-map');
 
 /**
-* Сгенерировать пины
+* Сгенерировать пин
 * @param {object} advert элемент массива объявлений
 * @return {DOM-object}
 */
-var renderPin = function (advert) {
+var createPin = function (advert) {
   var pinTemplate = parentForPins.querySelector('.pin');
   var pin = pinTemplate.cloneNode(true);
   pin.setAttribute('style', 'left: ' + (advert.location.x - 40 / 2) + 'px; top: ' + (advert.location.y - 40) + 'px');
@@ -109,7 +111,7 @@ var renderPin = function (advert) {
 var renderFragment = function () {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < NUMBER_ADVERT; i++) {
-    fragment.appendChild(renderPin(adverts[i]));
+    fragment.appendChild(createPin(adverts[i]));
   }
   return fragment;
 };
@@ -119,43 +121,40 @@ parentForPins.appendChild(renderFragment());
 
 /**
 * Получить тип
-* @param {object} type элемент массива из объявления
-* @return {DOM-object}
+* @param {string} type тип недвижимости
+* @return {string}
 */
-function getType(type) {
-  var typeTanslate = '';
-  if (type === 'flat') {
-    typeTanslate = 'Квартира';
-  } if (type === 'bungalo') {
-    typeTanslate = 'Бунгало';
-  } else {
-    typeTanslate = 'Дом';
-  }
-  return typeTanslate;
+function getLodgeTypeTranslation(type) {
+  var LODGE_TYPE_TRANSLATIONS = {
+    flat: 'Квартира',
+    bungalo: 'Бунгало',
+    house: 'Дом'
+  };
+  return LODGE_TYPE_TRANSLATIONS[type] || '';
 }
 
 /**
 * Создать набор услуг
-* @param {object} features массив услуг
+* @param {string[]} features массив услуг
 * @return {DOM-object}
 */
 function createFeatures(features) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < features.length; i++) {
-    fragment.appendChild(renderSpanFeatures(features[i]));
+    fragment.appendChild(createSpanFeature(features[i]));
   }
   return fragment;
 }
 
 /**
-* Преобразовать элемен массива в span
-* @param {object} featuresElement элемент массива услуг
+* Создать элемент с описанием услуги
+* @param {String} featureName название услуги
 * @return {DOM-object}
 */
-function renderSpanFeatures(featuresElement) {
-  var spanFeatures = document.createElement('span');
-  spanFeatures.classList.add('feature__image', 'feature__image--' + featuresElement);
-  return spanFeatures;
+function createSpanFeature(featureName) {
+  var spanFeature = document.createElement('span');
+  spanFeature.classList.add('feature__image', 'feature__image--' + featureName);
+  return spanFeature;
 }
 
 /**
@@ -169,7 +168,7 @@ function createDescription(advert) {
   description.querySelector('.lodge__title').textContent = advert.offer.title;
   description.querySelector('.lodge__address').textContent = advert.offer.address;
   description.querySelector('.lodge__price').innerHTML = advert.offer.price + '\&#x20bd; /ночь';
-  description.querySelector('.lodge__type').textContent = getType(advert.offer.type);
+  description.querySelector('.lodge__type').textContent = getLodgeTypeTranslation(advert.offer.type);
   description.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + advert.offer.guests + ' гостей в ' + advert.offer.rooms + ' комнатах';
   description.querySelector('.lodge__checkin-time').textContent = 'Заезд после' + advert.offer.checkin + ', выезд до ' + advert.offer.checkout;
   description.querySelector('.lodge__features').appendChild(createFeatures(advert.offer.features));
@@ -178,7 +177,7 @@ function createDescription(advert) {
 }
 
 /**
-* Отобразить отписание на карте
+* Отобразить описание на карте
 * @param {object} advertInfo элемент массива объявлений
 */
 function displayDescription(advertInfo) {
