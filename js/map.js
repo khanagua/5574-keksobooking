@@ -51,11 +51,11 @@ function getArrayRandomElement(array) {
 function getAdverts() {
   return {
     author: {
-      avatar: 'img/avatars/user' + getElementWithoutRepeat(AVATARS) + '.png',
+      avatar: 'img/avatars/user' + getElementWithoutRepeat(AVATARS) + '.png'
     },
     location: {
       x: getRandomNumber(300, 900),
-      y: getRandomNumber(100, 500),
+      y: getRandomNumber(100, 500)
     },
     offer: {
       title: getElementWithoutRepeat(TITLES),
@@ -68,7 +68,7 @@ function getAdverts() {
       checkout: CHECKOUT[getRandomNumber(0, CHECKOUT.length - 1)],
       features: getArrayRandomElement(FEATURES),
       description: '',
-      photos: [],
+      photos: []
     },
   };
 }
