@@ -1,6 +1,6 @@
 'use strict';
 
-// РАЗДЕЛ: рисуем пины и один блок с информацией 
+// РАЗДЕЛ: рисуем пины и один блок с информацией
 
 var AVATARS = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
@@ -98,16 +98,18 @@ var map = document.querySelector('.tokyo__pin-map');
 /**
 * Сгенерировать пин
 * @param {object} advert элемент массива объявлений
+* @param {number} arrNumber
 * @return {DOM-object}
 */
-function createPin (advert, arrNumber) {
+function createPin(advert, arrNumber) {
   var pinTemplate = map.querySelector('.pin');
   var pin = pinTemplate.cloneNode(true);
   pin.setAttribute('style', 'left: ' + (advert.location.x - 40 / 2) + 'px; top: ' + (advert.location.y - 40) + 'px');
   pin.setAttribute('data-arr-number', arrNumber);
+  pin.setAttribute('tabindex', 0);
   pin.children[0].setAttribute('src', advert.author.avatar);
   return pin;
-};
+}
 
 /**
 * Подготовить фрагмент с элементами для вставки
@@ -119,7 +121,7 @@ function renderFragment() {
     fragment.appendChild(createPin(adverts[i], i));
   }
   return fragment;
-};
+}
 
 // Добавляем пины на карту
 map.appendChild(renderFragment());
@@ -193,27 +195,69 @@ function displayDescription(advertInfo) {
   avatar.setAttribute('src', advertInfo.author.avatar);
 }
 
-displayDescription(adverts[0]);
-
 
 // РАЗДЕЛ: добавляем динамики - клик на пине и показ информации в блоке
 
-map.addEventListener('click', pinClickHandler, true)
+var card = document.querySelector('.dialog');
+var closeCard = card.querySelector('.dialog__close');
 
-function pinClickHandler(evt) {
-  // обнуляем активные элементы
+map.addEventListener('click', function (evt) {
+  onOpenCard(evt);
+});
+
+map.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === 13) {
+    onOpenCard(evt);
+  }
+});
+
+/**
+* Показать блок с информацией
+* @param {object} evt событие
+*/
+function onOpenCard(evt) {
+  // ищем, в какой пин кликнули и присваиваем модификатор
+  var clickedElement = evt.target;
+  var arrNumber;
+  if (clickedElement.tagName === 'DIV') {
+    clickedElement.classList.add('pin--active');
+    arrNumber = clickedElement.getAttribute('data-arr-number');
+  } else if (clickedElement.tagName === 'IMG') {
+    clickedElement.parentNode.classList.add('pin--active');
+    arrNumber = clickedElement.parentNode.getAttribute('data-arr-number');
+  }
+  // показываем блок с инфой
+  card.removeAttribute('style', 'display');
+  displayDescription(adverts[arrNumber]);
+}
+
+
+closeCard.addEventListener('click', function (evt) {
+  onCloseCard(evt);
+});
+
+closeCard.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === 13) {
+    onCloseCard(evt);
+  }
+});
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === 27) {
+    onCloseCard(evt);
+  }
+});
+
+/**
+* Скрыть блок с информацией
+* @param {object} evt событие
+*/
+function onCloseCard(evt) {
+  card.setAttribute('style', 'display: none;');
+    // обнуляем активные элементы
   var pinActive = map.querySelector('.pin--active');
   if (pinActive !== null) {
     pinActive.classList.remove('pin--active');
   }
-
-  // ищем, в какой пин кликнули и присваиваем модификатор
-  var clickedElement = evt.target;
-  if (clickedElement.tagName === 'DIV') {
-    clickedElement.classList.add('pin--active');
-    alert('сработало это пин');
-  } else if(clickedElement.tagName === 'IMG') {
-    clickedElement.parentNode.classList.add('pin--active');
-    alert('сработало это аватар');
-  }
 }
+
