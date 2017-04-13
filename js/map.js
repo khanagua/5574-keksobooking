@@ -105,7 +105,7 @@ function createPin(advert, advertIndex) {
   var pinTemplate = map.querySelector('.pin');
   var pin = pinTemplate.cloneNode(true);
   pin.setAttribute('style', 'left: ' + (advert.location.x - 40 / 2) + 'px; top: ' + (advert.location.y - 40) + 'px');
-  pin.setAttribute('data-arr-number', advertIndex);
+  pin.setAttribute('data-advert-index', advertIndex);
   pin.setAttribute('tabindex', 0);
   pin.children[0].setAttribute('src', advert.author.avatar);
   return pin;
@@ -213,7 +213,7 @@ map.addEventListener('keydown', function (evt) {
 
 /**
 * Показать блок с информацией
-* @param {Event} element событие
+* @param {Object} element событие
 */
 function openElementCard(element) {
   // ищем, в какой пин кликнули и присваиваем модификатор
@@ -221,10 +221,10 @@ function openElementCard(element) {
   var elementTagName = element.tagName;
   if (elementTagName === 'DIV') {
     element.classList.add('pin--active');
-    advertIndex = element.getAttribute('data-arr-number');
+    advertIndex = element.getAttribute('data-advert-index');
   } else if (element.tagName === 'IMG') {
     element.parentNode.classList.add('pin--active');
-    advertIndex = element.parentNode.getAttribute('data-arr-number');
+    advertIndex = element.parentNode.getAttribute('data-advert-index');
   }
   // показываем блок с инфой
   card.removeAttribute('style', 'display');
