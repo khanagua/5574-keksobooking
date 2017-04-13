@@ -1,5 +1,7 @@
 'use strict';
 
+// РАЗДЕЛ: рисуем пины и один блок с информацией
+
 var AVATARS = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var TYPES = ['flat', 'house', 'bungalo'];
@@ -49,17 +51,19 @@ function getArrayRandomElement(array) {
 * @return {object[]}
 */
 function getAdverts() {
+  var xLocation = getRandomNumber(300, 900);
+  var yLocation = getRandomNumber(100, 500);
   return {
     author: {
       avatar: 'img/avatars/user' + getElementWithoutRepeat(AVATARS) + '.png'
     },
     location: {
-      x: getRandomNumber(300, 900),
-      y: getRandomNumber(100, 500)
+      x: xLocation,
+      y: yLocation
     },
     offer: {
       title: getElementWithoutRepeat(TITLES),
-      address: (location.x + ', ' + location.y),
+      address: (xLocation + ', ' + yLocation),
       price: getRandomNumber(1000, 1000000),
       type: TYPES[getRandomNumber(0, TYPES.length - 1)],
       rooms: getRandomNumber(1, 5),
@@ -89,35 +93,38 @@ function creatAdvertArr() {
 var adverts = creatAdvertArr();
 
 // отрисовываем элементы
-var parentForPins = document.querySelector('.tokyo__pin-map');
+var map = document.querySelector('.tokyo__pin-map');
 
 /**
 * Сгенерировать пин
 * @param {object} advert элемент массива объявлений
+* @param {number} advertIndex индекс объявления
 * @return {DOM-object}
 */
-var createPin = function (advert) {
-  var pinTemplate = parentForPins.querySelector('.pin');
+function createPin(advert, advertIndex) {
+  var pinTemplate = map.querySelector('.pin');
   var pin = pinTemplate.cloneNode(true);
   pin.setAttribute('style', 'left: ' + (advert.location.x - 40 / 2) + 'px; top: ' + (advert.location.y - 40) + 'px');
+  pin.setAttribute('data-advert-index', advertIndex);
+  pin.setAttribute('tabindex', 0);
   pin.children[0].setAttribute('src', advert.author.avatar);
   return pin;
-};
+}
 
 /**
 * Подготовить фрагмент с элементами для вставки
 * @return {DOM-object}
 */
-var renderFragment = function () {
+function renderFragment() {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < NUMBER_ADVERT; i++) {
-    fragment.appendChild(createPin(adverts[i]));
+    fragment.appendChild(createPin(adverts[i], i));
   }
   return fragment;
-};
+}
 
 // Добавляем пины на карту
-parentForPins.appendChild(renderFragment());
+map.appendChild(renderFragment());
 
 /**
 * Получить тип
@@ -188,4 +195,68 @@ function displayDescription(advertInfo) {
   avatar.setAttribute('src', advertInfo.author.avatar);
 }
 
-displayDescription(adverts[0]);
+
+// РАЗДЕЛ: добавляем динамики - клик на пине и показ информации в блоке
+
+var card = document.querySelector('.dialog');
+var closeCard = card.querySelector('.dialog__close');
+
+map.addEventListener('click', function (evt) {
+  openElementCard(evt.target);
+});
+
+map.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === 13) {
+    openElementCard(evt.target);
+  }
+});
+
+/**
+* Показать блок с информацией
+* @param {Object} element элемент, на котором произошло событие
+*/
+function openElementCard(element) {
+  // ищем, в какой пин кликнули и присваиваем модификатор
+  var advertIndex;
+  var elementTagName = element.tagName;
+  if (elementTagName === 'DIV') {
+    element.classList.add('pin--active');
+    advertIndex = element.getAttribute('data-advert-index');
+  } else if (element.tagName === 'IMG') {
+    element.parentNode.classList.add('pin--active');
+    advertIndex = element.parentNode.getAttribute('data-advert-index');
+  }
+  // показываем блок с инфой
+  card.removeAttribute('style', 'display');
+  displayDescription(adverts[advertIndex]);
+}
+
+
+closeCard.addEventListener('click', function (evt) {
+  closeCurrentCard();
+});
+
+closeCard.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === 13) {
+    closeCurrentCard();
+  }
+});
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === 27) {
+    closeCurrentCard();
+  }
+});
+
+/**
+* Скрыть блок с информацией
+*/
+function closeCurrentCard() {
+  card.setAttribute('style', 'display: none;');
+    // обнуляем активные элементы
+  var pinActive = map.querySelector('.pin--active');
+  if (pinActive !== null) {
+    pinActive.classList.remove('pin--active');
+  }
+}
+
