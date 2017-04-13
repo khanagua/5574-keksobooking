@@ -213,7 +213,7 @@ map.addEventListener('keydown', function (evt) {
 
 /**
 * Показать блок с информацией
-* @param {Object} element событие
+* @param {Object} element элемент, на котором произошло событие
 */
 function openElementCard(element) {
   // ищем, в какой пин кликнули и присваиваем модификатор
