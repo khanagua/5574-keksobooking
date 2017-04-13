@@ -98,14 +98,14 @@ var map = document.querySelector('.tokyo__pin-map');
 /**
 * Сгенерировать пин
 * @param {object} advert элемент массива объявлений
-* @param {number} arrNumber
+* @param {number} advertIndex индекс объявления
 * @return {DOM-object}
 */
-function createPin(advert, arrNumber) {
+function createPin(advert, advertIndex) {
   var pinTemplate = map.querySelector('.pin');
   var pin = pinTemplate.cloneNode(true);
   pin.setAttribute('style', 'left: ' + (advert.location.x - 40 / 2) + 'px; top: ' + (advert.location.y - 40) + 'px');
-  pin.setAttribute('data-arr-number', arrNumber);
+  pin.setAttribute('data-arr-number', advertIndex);
   pin.setAttribute('tabindex', 0);
   pin.children[0].setAttribute('src', advert.author.avatar);
   return pin;
@@ -202,57 +202,56 @@ var card = document.querySelector('.dialog');
 var closeCard = card.querySelector('.dialog__close');
 
 map.addEventListener('click', function (evt) {
-  onOpenCard(evt);
+  openElementCard(evt.target);
 });
 
 map.addEventListener('keydown', function (evt) {
   if (evt.keyCode === 13) {
-    onOpenCard(evt);
+    openElementCard(evt.target);
   }
 });
 
 /**
 * Показать блок с информацией
-* @param {object} evt событие
+* @param {Event} element событие
 */
-function onOpenCard(evt) {
+function openElementCard(element) {
   // ищем, в какой пин кликнули и присваиваем модификатор
-  var clickedElement = evt.target;
-  var arrNumber;
-  if (clickedElement.tagName === 'DIV') {
-    clickedElement.classList.add('pin--active');
-    arrNumber = clickedElement.getAttribute('data-arr-number');
-  } else if (clickedElement.tagName === 'IMG') {
-    clickedElement.parentNode.classList.add('pin--active');
-    arrNumber = clickedElement.parentNode.getAttribute('data-arr-number');
+  var advertIndex;
+  var elementTagName = element.tagName;
+  if (elementTagName === 'DIV') {
+    element.classList.add('pin--active');
+    advertIndex = element.getAttribute('data-arr-number');
+  } else if (element.tagName === 'IMG') {
+    element.parentNode.classList.add('pin--active');
+    advertIndex = element.parentNode.getAttribute('data-arr-number');
   }
   // показываем блок с инфой
   card.removeAttribute('style', 'display');
-  displayDescription(adverts[arrNumber]);
+  displayDescription(adverts[advertIndex]);
 }
 
 
 closeCard.addEventListener('click', function (evt) {
-  onCloseCard(evt);
+  closeCurrentCard();
 });
 
 closeCard.addEventListener('keydown', function (evt) {
   if (evt.keyCode === 13) {
-    onCloseCard(evt);
+    closeCurrentCard();
   }
 });
 
 document.addEventListener('keydown', function (evt) {
   if (evt.keyCode === 27) {
-    onCloseCard(evt);
+    closeCurrentCard();
   }
 });
 
 /**
 * Скрыть блок с информацией
-* @param {object} evt событие
 */
-function onCloseCard(evt) {
+function closeCurrentCard() {
   card.setAttribute('style', 'display: none;');
     // обнуляем активные элементы
   var pinActive = map.querySelector('.pin--active');
