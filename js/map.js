@@ -281,22 +281,21 @@ var MIN_PRICE = {
   palace: 10000
 };
 
-type.addEventListener('blur', function () {
+type.addEventListener('change', function () {
   var minPrice = MIN_PRICE[type.value];
   price.setAttribute('min', minPrice);
-  price.value = minPrice;
 });
 
 var roomNumber = form.elements.room_number;
 var capacity = form.elements.capacity;
-var GUESTS = {
-  room1: 'guestsNone',
-  room2: 'guests3',
-  room100: 'guests3'
+var GUESTS_OF_ROOM = {
+  1: '0',
+  2: '3',
+  100: '3'
 };
 
-roomNumber.addEventListener('blur', function () {
-  capacity.value = GUESTS[roomNumber.value];
+roomNumber.addEventListener('change', function () {
+  capacity.value = GUESTS_OF_ROOM[roomNumber.value];
 });
 
 // Сбрасыаем значения при отправке

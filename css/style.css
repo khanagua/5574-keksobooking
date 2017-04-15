@@ -656,6 +656,6 @@ select option:hover {
     border-radius: 50%;
 }
 
-input:invalid, input:focus:invalid, textarea:focus:invalid {
+input:focus:invalid, textarea:focus:invalid {
 border: 2px solid #f42c04;
 }
