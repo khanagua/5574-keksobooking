@@ -1,71 +1,25 @@
 'use strict';
 
-window.data = (function () {
+window.creatAdvertArr = (function () {
 
-  window.AVATARS = ['01', '02', '03', '04', '05', '06', '07', '08'];
-  window.TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
-  window.TYPES = ['flat', 'house', 'bungalo'];
-  window.CHECKIN = ['12:00', '13:00', '14:00'];
-  window.CHECKOUT = ['12:00', '13:00', '14:00'];
-  window.FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+  var AVATARS = ['01', '02', '03', '04', '05', '06', '07', '08'];
+  var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
+  var TYPES = ['flat', 'house', 'bungalo'];
+  var CHECKIN = ['12:00', '13:00', '14:00'];
+  var CHECKOUT = ['12:00', '13:00', '14:00'];
+  var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
   /**
   * Создать массив из нескольких объявлений
-  * @param {number} NUMBER_ADVERT количество комнат
+  * @param {number} numberAdverts количество объявлений
   * @return {object} advertArr
   */
-  function creatAdvertArr(NUMBER_ADVERT) {
+  function creatAdvertArr(numberAdverts) {
     var advertArr = [];
-    for (var i = 0; i < NUMBER_ADVERT; i++) {
+    for (var i = 0; i < numberAdverts; i++) {
       advertArr[i] = getAdverts();
     }
     return advertArr;
-  }
-
-
-
-
-
-
-
-
-
-
-  /**
-  * Получить случайное число в промежутке [min, max]
-  * @param {Number} min минимальное число
-  * @param {Number} max максимально число
-  * @return {Number}
-  */
-  function getRandomNumber(min, max) {
-    return Math.floor(Math.random() * ((max + 1) - min)) + min;
-  }
-
-  /**
-  * Получить и удалить рандомный неповторяющийся элемент из массива
-  * @param {object} array массив данных
-  * @return {object}
-  */
-  function getElementWithoutRepeat(array) {
-    var randomIndex = getRandomNumber(0, array.length - 1);
-    var randomElement = array[randomIndex];
-    array.splice(randomIndex, 1);
-    return randomElement;
-  }
-
-
-  /**
-  * Получить массив рандомной длины из рандомных неповторяющихся элементов
-  * @param {string[]} array массив данных
-  * @return {object}
-  */
-  function getArrayRandomElement(array) {
-    var randomArrayLength = getRandomNumber(0, array.length - 1);
-    var randomArray = [];
-    for (var i = 0; i <= randomArrayLength; i++) {
-      randomArray[i] = getElementWithoutRepeat(array);
-    }
-    return randomArray;
   }
 
   /**
@@ -99,8 +53,41 @@ window.data = (function () {
     };
   }
 
+  /**
+  * Получить и удалить рандомный неповторяющийся элемент из массива
+  * @param {object} array массив данных
+  * @return {object}
+  */
+  function getElementWithoutRepeat(array) {
+    var randomIndex = getRandomNumber(0, array.length - 1);
+    var randomElement = array[randomIndex];
+    array.splice(randomIndex, 1);
+    return randomElement;
+  }
 
+  /**
+  * Получить случайное число в промежутке [min, max]
+  * @param {Number} min минимальное число
+  * @param {Number} max максимально число
+  * @return {Number}
+  */
+  function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * ((max + 1) - min)) + min;
+  }
 
+  /**
+  * Получить массив рандомной длины из рандомных неповторяющихся элементов
+  * @param {string[]} array массив данных
+  * @return {object}
+  */
+  function getArrayRandomElement(array) {
+    var randomArrayLength = getRandomNumber(0, array.length - 1);
+    var randomArray = [];
+    for (var i = 0; i <= randomArrayLength; i++) {
+      randomArray[i] = getElementWithoutRepeat(array);
+    }
+    return randomArray;
+  }
 
-
+  return creatAdvertArr;
 })();

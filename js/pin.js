@@ -1,9 +1,9 @@
 'use strict';
 
-window.pin = (function () {
+window.renderPins = (function () {
 
   // отрисовываем элементы
-  var map = document.querySelector('.tokyo__pin-map');
+  window.map = document.querySelector('.tokyo__pin-map');
 
   /**
   * Сгенерировать пин
@@ -12,7 +12,7 @@ window.pin = (function () {
   * @return {DOM-object}
   */
   function createPin(advert, advertIndex) {
-    var pinTemplate = map.querySelector('.pin');
+    var pinTemplate = window.map.querySelector('.pin');
     var pin = pinTemplate.cloneNode(true);
     pin.setAttribute('style', 'left: ' + (advert.location.x - 40 / 2) + 'px; top: ' + (advert.location.y - 40) + 'px');
     pin.setAttribute('data-advert-index', advertIndex);
@@ -27,13 +27,17 @@ window.pin = (function () {
   */
   function renderFragment() {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < NUMBER_ADVERT; i++) {
-      fragment.appendChild(createPin(adverts[i], i));
+    for (var i = 0; i < window.NUMBER_ADVERT; i++) {
+      fragment.appendChild(createPin(window.adverts[i], i));
     }
     return fragment;
   }
 
-  // Добавляем пины на карту
-  map.appendChild(renderFragment());
+  function renderPins() {
+      // Добавляем пины на карту
+    return window.map.appendChild(renderFragment());
+  }
+
+  return renderPins;
 
 })();

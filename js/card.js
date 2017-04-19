@@ -1,6 +1,6 @@
 'use strict';
 
-window.card = (function () {
+window.displayDescription = (function () {
 
   /**
   * Получить тип
@@ -71,4 +71,5 @@ window.card = (function () {
     avatar.setAttribute('src', advertInfo.author.avatar);
   }
 
+  return displayDescription;
 })();

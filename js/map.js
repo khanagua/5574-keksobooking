@@ -1,32 +1,22 @@
 'use strict';
 
 (function () {
-  var NUMBER_ADVERT = 8;  // количество объявлений
+  window.NUMBER_ADVERT = 8;  // количество объявлений
 
   // создаем массив объявлений
-  var adverts = window.data.creatAdvertArr(NUMBER_ADVERT);
-
-
-
-
-
-
-
-
-
-
-
+  window.adverts = window.creatAdvertArr(window.NUMBER_ADVERT);
+  window.renderPins();
 
   // РАЗДЕЛ: добавляем динамики - клик на пине и показ информации в блоке
 
   var card = document.querySelector('.dialog');
   var closeCard = card.querySelector('.dialog__close');
 
-  window.pin.map.addEventListener('click', function (evt) {
+  window.map.addEventListener('click', function (evt) {
     openElementCard(evt.target);
   });
 
-  window.pin.map.addEventListener('keydown', function (evt) {
+  window.map.addEventListener('keydown', function (evt) {
     if (evt.keyCode === 13) {
       openElementCard(evt.target);
     }
@@ -49,7 +39,7 @@
     }
     // показываем блок с инфой
     card.removeAttribute('style', 'display');
-    window.card.displayDescription(adverts[advertIndex]);
+    window.displayDescription(window.adverts[advertIndex]);
 
     closeCard.addEventListener('click', function (evt) {
       closeCurrentCard();
@@ -75,7 +65,7 @@
   function closeCurrentCard() {
     card.setAttribute('style', 'display: none;');
       // обнуляем активные элементы
-    var pinActive = map.querySelector('.pin--active');
+    var pinActive = window.map.querySelector('.pin--active');
     if (pinActive !== null) {
       pinActive.classList.remove('pin--active');
     }
