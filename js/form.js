@@ -40,7 +40,23 @@
     capacity.value = GUESTS_OF_ROOM[roomNumber.value];
   });
 
-  // Сбрасыаем значения при отправке
+  window.address = form.elements.address;
+  window.address.addEventListener('change', function () {
+    var coordsArray = window.address.value.split(',');
+    for (var i = 0; i < coordsArray.length; i++) {
+      while (isNaN(coordsArray[i])) {
+        coordsArray[i] = coordsArray[i].slice(1);
+      }
+      coordsArray[i] = +coordsArray[i];
+    }
+
+    if ((coordsArray[0] <= 1210) && (coordsArray[1] <= 645)) {
+      window.pinHandle.style.left = coordsArray[0] - (window.pinHandleHeight / 2) + 'px';
+      window.pinHandle.style.top = coordsArray[1] - window.pinHandleWidth + 'px';
+    }
+  });
+
+  // Сбрасываем значения при отправке
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
     form.reset();
