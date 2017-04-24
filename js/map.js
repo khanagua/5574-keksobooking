@@ -83,6 +83,11 @@
     };
 
     // получаем новые координаты
+
+    /**
+    * Сгенерировать пин
+    * @param {object} moveEvt объект события
+    */
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
@@ -109,7 +114,6 @@
       if ((actualX <= 1210) && (actualY <= 645)) {
         window.address.value = 'x: ' + actualX + ', y: ' + actualY;
       } else {
-        alert('Установите метку в границах карты'); //  почему здесь ругается еслинт на алерт?
         window.map.removeEventListener('mousemove', onMouseMove);
         window.map.removeEventListener('mouseup', onMouseUp);
       }

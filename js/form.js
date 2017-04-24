@@ -53,8 +53,6 @@
     if ((coordsArray[0] <= 1210) && (coordsArray[1] <= 645)) {
       window.pinHandle.style.left = coordsArray[0] - (window.pinHandleHeight / 2) + 'px';
       window.pinHandle.style.top = coordsArray[1] - window.pinHandleWidth + 'px';
-    } else {
-      alert('Значения не должны превышать 1210 и 645 соответственно');
     }
   });
 
