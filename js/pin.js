@@ -15,6 +15,7 @@ window.renderPins = (function () {
     var pinTemplate = window.map.querySelector('.pin');
     var pin = pinTemplate.cloneNode(true);
     pin.setAttribute('style', 'left: ' + (advert.location.x - 40 / 2) + 'px; top: ' + (advert.location.y - 40) + 'px');
+    pin.classList.remove('pin__main');
     pin.setAttribute('data-advert-index', advertIndex);
     pin.setAttribute('tabindex', 0);
     pin.children[0].setAttribute('src', advert.author.avatar);
@@ -33,8 +34,11 @@ window.renderPins = (function () {
     return fragment;
   }
 
+  /**
+  * Добавить пины на карту
+  * @return {DOM-object}
+  */
   function renderPins() {
-      // Добавляем пины на карту
     return window.map.appendChild(renderFragment());
   }
 

@@ -2,19 +2,24 @@
 
 (function () {
 
-  // РАЗДЕЛ Валидация формы
+  // синхронизация времен заезда и выезда
   var form = document.forms[1];
   var timeIn = form.elements.time;
   var timeOut = form.elements.timeout;
 
-  timeIn.addEventListener('change', function () {
-    timeOut.selectedIndex = timeIn.selectedIndex;
-  });
+  /**
+  * Синхронизировать значения двух полей
+  * @param {object} time1 первое поле
+  * @param {object} time2 второе поле
+  */
+  function syncValuestimeIntimeOut(time1, time2) {
+    time2.selectedIndex = time1.selectedIndex;
+  }
 
-  timeOut.addEventListener('change', function () {
-    timeIn.selectedIndex = timeOut.selectedIndex;
-  });
+  window.synchronizeFields(timeIn, timeOut, null, syncValuestimeIntimeOut);
+  window.synchronizeFields(timeOut, timeIn, null, syncValuestimeIntimeOut);
 
+  // синхронизация значения стоимости
   var type = form.elements.type;
   var price = form.elements.price;
   var MIN_PRICE = {
@@ -23,11 +28,20 @@
     palace: 10000
   };
 
-  type.addEventListener('change', function () {
-    var minPrice = MIN_PRICE[type.value];
-    price.setAttribute('min', minPrice);
-  });
+  /**
+  * Синхронизировать минимальную цену жилья в соответствии с ее типом
+  * @param {object} nodeType поле тип жилья
+  * @param {object} nodePrice поле цена жилья
+  * @param {object} mapOfPrice возможные значения поля цена
+  */
+  function syncValuesTypePrice(nodeType, nodePrice, mapOfPrice) {
+    var minPrice = mapOfPrice[nodeType.value];
+    nodePrice.setAttribute('min', minPrice);
+  }
 
+  window.synchronizeFields(type, price, MIN_PRICE, syncValuesTypePrice);
+
+  // синхронизация значений количества комнат и гостей
   var roomNumber = form.elements.room_number;
   var capacity = form.elements.capacity;
   var GUESTS_OF_ROOM = {
@@ -36,10 +50,19 @@
     100: '3'
   };
 
-  roomNumber.addEventListener('change', function () {
-    capacity.value = GUESTS_OF_ROOM[roomNumber.value];
-  });
+  /**
+  * Синхронизировать количество гостей в соответствии с количеством комнат
+  * @param {object} nodeRoom поле количество комнат
+  * @param {object} nodeCapacity поле количество гостей
+  * @param {object} mapOfRoom возможные значения поля гости
+  */
+  function syncValuesRoomCapacity(nodeRoom, nodeCapacity, mapOfRoom) {
+    nodeCapacity.value = mapOfRoom[nodeRoom.value];
+  }
 
+  window.synchronizeFields(roomNumber, capacity, GUESTS_OF_ROOM, syncValuesRoomCapacity);
+
+  // передача координат подвижному пину из поля адрес
   window.address = form.elements.address;
   window.address.addEventListener('change', function () {
     var coordsArray = window.address.value.split(',');
