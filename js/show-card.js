@@ -21,7 +21,7 @@ window.showCard = (function () {
     // показываем блок с инфой
     window.card.removeAttribute('style', 'display');
     if (advertIndex !== null) {
-      window.displayDescription(window.adverts[advertIndex]);
+      window.displayDescription(window.advertArr[advertIndex]);
     }
 
     window.closeCard.addEventListener('click', function (evt) {

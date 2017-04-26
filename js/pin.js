@@ -24,22 +24,24 @@ window.renderPins = (function () {
 
   /**
   * Подготовить фрагмент с элементами для вставки
+  * @param {object} data массив объектов объявлений
   * @return {DOM-object}
   */
-  function renderFragment() {
+  function renderFragment(data) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < window.NUMBER_ADVERT; i++) {
-      fragment.appendChild(createPin(window.adverts[i], i));
+    for (var i = 0; i < data.length; i++) {
+      fragment.appendChild(createPin(data[i], i));
     }
     return fragment;
   }
 
   /**
   * Добавить пины на карту
+  * @param {object} data массив объектов объявлений
   * @return {DOM-object}
   */
-  function renderPins() {
-    return window.map.appendChild(renderFragment());
+  function renderPins(data) {
+    return window.map.appendChild(renderFragment(data));
   }
 
   return renderPins;

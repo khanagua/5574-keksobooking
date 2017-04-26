@@ -1,11 +1,6 @@
 'use strict';
 
 (function () {
-  window.NUMBER_ADVERT = 8;  // количество объявлений
-
-  // создаем массив объявлений
-  window.adverts = window.creatAdvertArr(window.NUMBER_ADVERT);
-  window.renderPins();
 
   // добавляем динамики - клик на пине и показ информации в блоке
   window.card = document.querySelector('.dialog');
