@@ -59,7 +59,7 @@ window.displayDescription = (function () {
     return description;
   }
 
-  /**
+  /*
   * Отобразить описание на карте
   * @param {object} advertInfo элемент массива объявлений
   */
