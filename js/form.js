@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   // синхронизация времен заезда и выезда
   var form = document.forms[1];
   var timeIn = form.elements.time;
@@ -85,5 +84,4 @@
     evt.preventDefault();
     form.reset();
   });
-
 })();

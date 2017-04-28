@@ -3,11 +3,16 @@
 window.debounce = (function () {
   var DEBOUNCE_INTERVAL = 500;
   var lastTimeout;
-  var debounce = function (fun) {
+
+  /**
+  * Устраняет "дребезг" функции
+  * @param {function} callback функция
+  */
+  var debounce = function (callback) {
     if (lastTimeout) {
       window.clearTimeout(lastTimeout);
     }
-    lastTimeout = window.setTimeout(fun, DEBOUNCE_INTERVAL);
+    lastTimeout = window.setTimeout(callback, DEBOUNCE_INTERVAL);
   };
   return debounce;
 })();
