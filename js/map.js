@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   // добавляем динамики - клик на пине и показ информации в блоке
   window.card = document.querySelector('.dialog');
   window.closeCard = window.card.querySelector('.dialog__close');
@@ -29,7 +28,7 @@
 
     /**
     * Определить новое положение пина и прописать его координаты в поле адрес
-    * @param {object} moveEvt объект события
+    * @param {Event} moveEvt объект события
     */
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
@@ -64,7 +63,7 @@
 
     /**
     * Перестать отслеживать движения курсора
-    * @param {object} upEvt объект события
+    * @param {Event} upEvt объект события
     */
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();

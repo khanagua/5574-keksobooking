@@ -1,7 +1,6 @@
 'use strict';
 
 window.showCard = (function () {
-
   /**
   * Показать блок с информацией
   * @param {Object} element элемент, на котором произошло событие
@@ -61,5 +60,4 @@ window.showCard = (function () {
   }
 
   return showCard;
-
 })();

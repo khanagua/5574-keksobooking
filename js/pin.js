@@ -1,7 +1,6 @@
 'use strict';
 
 window.renderPins = (function () {
-
   // отрисовываем элементы
   window.map = document.querySelector('.tokyo__pin-map');
 
@@ -25,7 +24,7 @@ window.renderPins = (function () {
 
   /**
   * Подготовить фрагмент с элементами для вставки
-  * @param {object} data массив объектов объявлений
+  * @param {object[]} data массив объектов объявлений
   * @return {DOM-object}
   */
   function renderFragment(data) {
@@ -41,7 +40,7 @@ window.renderPins = (function () {
 
   /**
   * Добавить пины на карту
-  * @param {object} data массив объектов объявлений
+  * @param {object[]} data массив объектов объявлений
   * @return {DOM-object}
   */
   function renderPins(data) {
