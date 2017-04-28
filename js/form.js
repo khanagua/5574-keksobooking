@@ -37,6 +37,7 @@
   function syncValuesTypePrice(nodeType, nodePrice, mapOfPrice) {
     var minPrice = mapOfPrice[nodeType.value];
     nodePrice.setAttribute('min', minPrice);
+    nodePrice.setAttribute('placeholder', minPrice);
   }
 
   window.synchronizeFields(type, price, MIN_PRICE, syncValuesTypePrice);
