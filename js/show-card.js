@@ -4,12 +4,14 @@ window.showCard = (function () {
   /**
   * Показать блок с информацией
   * @param {Object} element элемент, на котором произошло событие
+  * @param {DOM-object} card карточка для отображения информации об объекте
+  * @param {DOM-object} map карта, на которой будет отображаться карточка
   */
-  function showCard(element) {
+  function showCard(element, card, map) {
     // ищем, в какой пин кликнули и присваиваем модификатор
     var advertIndex;
     var elementTagName = element.tagName;
-    removeActive();
+    removeActive(map);
     if (elementTagName === 'DIV') {
       element.classList.add('pin--active');
       advertIndex = element.getAttribute('data-advert-index');
@@ -18,42 +20,44 @@ window.showCard = (function () {
       advertIndex = element.parentNode.getAttribute('data-advert-index');
     }
     // показываем блок с инфой
-    window.card.removeAttribute('style', 'display');
+    card.removeAttribute('style', 'display');
     if (advertIndex !== null) {
       window.displayDescription(window.advertArr[advertIndex]);
     }
 
-    window.closeCard.addEventListener('click', function (evt) {
-      closeCurrentCard();
-    });
-
-    window.closeCard.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === 13) {
+    /**
+    * Определить нажатую кнопку
+    * @param {Event} evt объект события
+    */
+    function onPopupButtonPress(evt) {
+      if (evt.keyCode === (27 || 13)) {
         closeCurrentCard();
       }
-    });
+    }
 
-    document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === 27) {
-        closeCurrentCard();
-      }
-    });
-  }
+    window.closeCard.addEventListener('click', closeCurrentCard);
+    window.closeCard.addEventListener('keydown', onPopupButtonPress);
+    document.addEventListener('keydown', onPopupButtonPress);
 
-  /**
-  * Скрыть блок с информацией
-  */
-  function closeCurrentCard() {
-    window.card.setAttribute('style', 'display: none;');
-    removeActive();
+    /**
+    * Скрыть блок с информацией
+    */
+    function closeCurrentCard() {
+      card.setAttribute('style', 'display: none;');
+      removeActive(map);
+      window.closeCard.removeEventListener('click', closeCurrentCard);
+      window.closeCard.removeEventListener('keydown', onPopupButtonPress);
+      document.removeEventListener('keydown', onPopupButtonPress);
+    }
   }
 
   /**
   * Удалить признак активного пина
+  * @param {DOM-object} map карта, на которой обрабатываются пины
   */
-  function removeActive() {
+  function removeActive(map) {
   // обнуляем активные элементы
-    var pinActive = window.map.querySelector('.pin--active');
+    var pinActive = map.querySelector('.pin--active');
     if (pinActive !== null) {
       pinActive.classList.remove('pin--active');
     }

@@ -2,16 +2,16 @@
 
 (function () {
   // добавляем динамики - клик на пине и показ информации в блоке
-  window.card = document.querySelector('.dialog');
-  window.closeCard = window.card.querySelector('.dialog__close');
+  var card = document.querySelector('.dialog');
+  window.closeCard = card.querySelector('.dialog__close');
 
   window.map.addEventListener('click', function (evt) {
-    window.showCard(evt.target);
+    window.showCard(evt.target, card, window.map);
   });
 
   window.map.addEventListener('keydown', function (evt) {
     if (evt.keyCode === 13) {
-      window.showCard(evt.target);
+      window.showCard(evt.target, card, window.map);
     }
   });
 
@@ -19,7 +19,7 @@
   window.pinHandle = window.map.querySelector('.pin__main');
 
   window.pinHandle.addEventListener('mousedown', function (evt) {
-    // получаем первычные координаты пина
+    // получаем первичные координаты пина
     evt.preventDefault();
     var pinCoords = {
       x: evt.clientX,
