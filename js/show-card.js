@@ -27,17 +27,38 @@ window.showCard = (function () {
 
     /**
     * Определить нажатую кнопку
+    * @param {Number} keyCode объект события
     * @param {Event} evt объект события
     */
-    function onPopupButtonPress(evt) {
-      if (evt.keyCode === (27 || 13)) {
+    function onPopupButtonPress(keyCode, evt) {
+      if (evt.keyCode === keyCode) {
         closeCurrentCard();
       }
     }
 
+    var ESC = 27;
+    var ENTER = 13;
+
+    /**
+    * Закрыть карточку по нажатию на enter
+    * @param {Event} keydownEvent событие нажатия на кнопку
+    */
+    var onKeydownCloseCard = function (keydownEvent) {
+      onPopupButtonPress(ENTER, keydownEvent);
+    };
+
+    /**
+    * Закрыть карточку по нажатию на esc
+    * @param {Event} keydownEvent событие нажатия на кнопку
+    */
+    var onKeydownDocument = function (keydownEvent) {
+      onPopupButtonPress(ESC, keydownEvent);
+    };
+
+
     window.closeCard.addEventListener('click', closeCurrentCard);
-    window.closeCard.addEventListener('keydown', onPopupButtonPress);
-    document.addEventListener('keydown', onPopupButtonPress);
+    window.closeCard.addEventListener('keydown', onKeydownCloseCard);
+    document.addEventListener('keydown', onKeydownDocument);
 
     /**
     * Скрыть блок с информацией
@@ -46,8 +67,8 @@ window.showCard = (function () {
       card.setAttribute('style', 'display: none;');
       removeActive(map);
       window.closeCard.removeEventListener('click', closeCurrentCard);
-      window.closeCard.removeEventListener('keydown', onPopupButtonPress);
-      document.removeEventListener('keydown', onPopupButtonPress);
+      window.closeCard.removeEventListener('keydown', onKeydownCloseCard);
+      document.removeEventListener('keydown', onKeydownDocument);
     }
   }
 
