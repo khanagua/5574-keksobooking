@@ -2,8 +2,6 @@
 
 window.renderPins = (function () {
   // отрисовываем элементы
-  window.map = document.querySelector('.tokyo__pin-map');
-
   /**
   * Сгенерировать пин
   * @param {object} advert элемент массива объявлений
@@ -42,10 +40,9 @@ window.renderPins = (function () {
   * @param {object[]} data массив объектов объявлений
   * @return {DOM-object}
   */
-  function renderPins(data) {
+  var renderPins = function (data) {
     return window.map.appendChild(renderFragment(data));
-  }
+  };
 
   return renderPins;
-
 })();
