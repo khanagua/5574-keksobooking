@@ -70,7 +70,7 @@
       while (isNaN(coordsArray[i])) {
         coordsArray[i] = coordsArray[i].slice(1);
       }
-      coordsArray[i] = +coordsArray[i];
+      coordsArray[i] = Number(coordsArray[i]);
     }
 
     if ((coordsArray[0] <= 1210) && (coordsArray[1] <= 645)) {

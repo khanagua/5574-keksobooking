@@ -15,7 +15,6 @@ window.renderPins = (function () {
     var pin = pinTemplate.cloneNode(true);
     pin.setAttribute('style', 'left: ' + (advert.location.x - 40 / 2) + 'px; top: ' + (advert.location.y - 40) + 'px');
     pin.classList.remove('pin__main');
-    pin.classList.add('myclass');
     pin.setAttribute('data-advert-index', advertIndex);
     pin.setAttribute('tabindex', 0);
     pin.children[0].setAttribute('src', advert.author.avatar);

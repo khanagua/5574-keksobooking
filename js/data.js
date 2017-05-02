@@ -25,5 +25,4 @@
 
     window.debounce(window.renderPins.bind(null, window.advertArr));
   });
-
 })();
