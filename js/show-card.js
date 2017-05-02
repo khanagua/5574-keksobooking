@@ -27,7 +27,7 @@ window.showCard = (function () {
 
     /**
     * Определить нажатую кнопку
-    * @param {Number} keyCode объект события
+    * @param {Number} keyCode код клавиши
     * @param {Event} evt объект события
     */
     function onPopupButtonPress(keyCode, evt) {
