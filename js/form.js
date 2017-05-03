@@ -1,4 +1,5 @@
 'use strict';
+
 window.form = (function (synchronizeFields) {
   // синхронизация времен заезда и выезда
   var form = document.forms[1];
@@ -67,5 +68,5 @@ window.form = (function (synchronizeFields) {
     form.reset();
   });
   return form;
-  
+
 })(window.synchronizeFields);

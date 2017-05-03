@@ -1,17 +1,17 @@
 'use strict';
 
-window.map = (function (form) {
+window.map = (function (form, showCard) {
   var map = document.querySelector('.tokyo__pin-map');
   // добавляем динамики - клик на пине и показ информации в блоке
   var card = document.querySelector('.dialog');
 
   map.addEventListener('click', function (evt) {
-    window.showCard(evt.target, card, map);
+    showCard(evt.target, card, map);
   });
 
   map.addEventListener('keydown', function (evt) {
     if (evt.keyCode === 13) {
-      window.showCard(evt.target, card, map);
+      showCard(evt.target, card, map);
     }
   });
 
@@ -92,4 +92,4 @@ window.map = (function (form) {
   });
 
   return map;
-})(window.form);
+})(window.form, window.showCard);

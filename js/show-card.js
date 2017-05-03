@@ -1,6 +1,6 @@
 'use strict';
 
-window.showCard = (function () {
+window.showCard = (function (displayDescription) {
   /**
   * Показать блок с информацией
   * @param {Object} element элемент, на котором произошло событие
@@ -23,7 +23,7 @@ window.showCard = (function () {
     // показываем блок с инфой
     card.removeAttribute('style', 'display');
     if (advertIndex !== null) {
-      window.displayDescription(window.advertArr[advertIndex]);
+      displayDescription(window.advertArr[advertIndex]);
     }
 
     /**
@@ -86,4 +86,4 @@ window.showCard = (function () {
   }
 
   return showCard;
-})();
+})(window.displayDescription);
