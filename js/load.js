@@ -1,12 +1,12 @@
 'use strict';
 
-(function () {
+window.load = (function () {
   /**
   * Сделать запрос на сервер
   * @param {string} url адрес хоста
   * @param {function} onLoad функция обработки при положительном ответе
   */
-  window.load = function (url, onLoad) {
+  function load(url, onLoad) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -39,7 +39,7 @@
 
     xhr.open('GET', URL);
     xhr.send();
-  };
+  }
 
   /**
   * Обработать отрицательный ответ с сервера
@@ -56,4 +56,6 @@
     var beforeBeginNode = document.querySelector('.tokyo__filters-container');
     beforeBeginNode.insertAdjacentElement('beforebegin', node);
   }
+
+  return load;
 })();

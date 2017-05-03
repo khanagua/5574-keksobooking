@@ -1,9 +1,7 @@
 'use strict';
 
-window.renderPins = (function () {
+window.renderPins = (function (map) {
   // отрисовываем элементы
-  window.map = document.querySelector('.tokyo__pin-map');
-
   /**
   * Сгенерировать пин
   * @param {object} advert элемент массива объявлений
@@ -11,7 +9,7 @@ window.renderPins = (function () {
   * @return {DOM-object}
   */
   function createPin(advert, advertIndex) {
-    var pinTemplate = window.map.querySelector('.pin');
+    var pinTemplate = map.querySelector('.pin');
     var pin = pinTemplate.cloneNode(true);
     pin.setAttribute('style', 'left: ' + (advert.location.x - 40 / 2) + 'px; top: ' + (advert.location.y - 40) + 'px');
     pin.classList.remove('pin__main');
@@ -42,10 +40,9 @@ window.renderPins = (function () {
   * @param {object[]} data массив объектов объявлений
   * @return {DOM-object}
   */
-  function renderPins(data) {
-    return window.map.appendChild(renderFragment(data));
-  }
+  var renderPins = function (data) {
+    return map.appendChild(renderFragment(data));
+  };
 
   return renderPins;
-
-})();
+})(window.map);

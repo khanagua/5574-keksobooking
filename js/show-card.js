@@ -1,6 +1,6 @@
 'use strict';
 
-window.showCard = (function () {
+window.showCard = (function (displayDescription) {
   /**
   * Показать блок с информацией
   * @param {Object} element элемент, на котором произошло событие
@@ -9,6 +9,7 @@ window.showCard = (function () {
   */
   function showCard(element, card, map) {
     // ищем, в какой пин кликнули и присваиваем модификатор
+    var closeCard = card.querySelector('.dialog__close');
     var advertIndex;
     var elementTagName = element.tagName;
     removeActive(map);
@@ -22,7 +23,7 @@ window.showCard = (function () {
     // показываем блок с инфой
     card.removeAttribute('style', 'display');
     if (advertIndex !== null) {
-      window.displayDescription(window.advertArr[advertIndex]);
+      displayDescription(window.advertArr[advertIndex]);
     }
 
     /**
@@ -56,8 +57,8 @@ window.showCard = (function () {
     };
 
 
-    window.closeCard.addEventListener('click', closeCurrentCard);
-    window.closeCard.addEventListener('keydown', onKeydownCloseCard);
+    closeCard.addEventListener('click', closeCurrentCard);
+    closeCard.addEventListener('keydown', onKeydownCloseCard);
     document.addEventListener('keydown', onKeydownDocument);
 
     /**
@@ -66,8 +67,8 @@ window.showCard = (function () {
     function closeCurrentCard() {
       card.setAttribute('style', 'display: none;');
       removeActive(map);
-      window.closeCard.removeEventListener('click', closeCurrentCard);
-      window.closeCard.removeEventListener('keydown', onKeydownCloseCard);
+      closeCard.removeEventListener('click', closeCurrentCard);
+      closeCard.removeEventListener('keydown', onKeydownCloseCard);
       document.removeEventListener('keydown', onKeydownDocument);
     }
   }
@@ -85,4 +86,4 @@ window.showCard = (function () {
   }
 
   return showCard;
-})();
+})(window.displayDescription);

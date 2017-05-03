@@ -1,6 +1,6 @@
 'use strict';
 
-(function () {
+window.form = (function (synchronizeFields) {
   // синхронизация времен заезда и выезда
   var form = document.forms[1];
   var timeIn = form.elements.time;
@@ -15,8 +15,8 @@
     time2.selectedIndex = time1.selectedIndex;
   }
 
-  window.synchronizeFields(timeIn, timeOut, null, syncValuestimeIntimeOut);
-  window.synchronizeFields(timeOut, timeIn, null, syncValuestimeIntimeOut);
+  synchronizeFields(timeIn, timeOut, null, syncValuestimeIntimeOut);
+  synchronizeFields(timeOut, timeIn, null, syncValuestimeIntimeOut);
 
   // синхронизация значения стоимости
   var type = form.elements.type;
@@ -39,7 +39,7 @@
     nodePrice.setAttribute('placeholder', minPrice);
   }
 
-  window.synchronizeFields(type, price, MIN_PRICE, syncValuesTypePrice);
+  synchronizeFields(type, price, MIN_PRICE, syncValuesTypePrice);
 
   // синхронизация значений количества комнат и гостей
   var roomNumber = form.elements.room_number;
@@ -60,28 +60,13 @@
     nodeCapacity.value = mapOfRoom[nodeRoom.value];
   }
 
-  window.synchronizeFields(roomNumber, capacity, GUESTS_OF_ROOM, syncValuesRoomCapacity);
-
-  // передача координат подвижному пину из поля адрес
-  window.address = form.elements.address;
-  window.address.addEventListener('change', function () {
-    var coordsArray = window.address.value.split(',');
-    for (var i = 0; i < coordsArray.length; i++) {
-      while (isNaN(coordsArray[i])) {
-        coordsArray[i] = coordsArray[i].slice(1);
-      }
-      coordsArray[i] = Number(coordsArray[i]);
-    }
-
-    if ((coordsArray[0] <= 1210) && (coordsArray[1] <= 645)) {
-      window.pinHandle.style.left = coordsArray[0] - (window.pinHandleHeight / 2) + 'px';
-      window.pinHandle.style.top = coordsArray[1] - window.pinHandleWidth + 'px';
-    }
-  });
+  synchronizeFields(roomNumber, capacity, GUESTS_OF_ROOM, syncValuesRoomCapacity);
 
   // Сбрасываем значения при отправке
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
     form.reset();
   });
-})();
+  return form;
+
+})(window.synchronizeFields);
