@@ -1,10 +1,9 @@
 'use strict';
-
-(function (synchronizeFields) {
+window.form = (function (synchronizeFields) {
   // синхронизация времен заезда и выезда
-  window.form = document.forms[1];
-  var timeIn = window.form.elements.time;
-  var timeOut = window.form.elements.timeout;
+  var form = document.forms[1];
+  var timeIn = form.elements.time;
+  var timeOut = form.elements.timeout;
 
   /**
   * Синхронизировать значения двух полей
@@ -19,8 +18,8 @@
   synchronizeFields(timeOut, timeIn, null, syncValuestimeIntimeOut);
 
   // синхронизация значения стоимости
-  var type = window.form.elements.type;
-  var price = window.form.elements.price;
+  var type = form.elements.type;
+  var price = form.elements.price;
   var MIN_PRICE = {
     flat: 1000,
     hovel: 0,
@@ -42,8 +41,8 @@
   synchronizeFields(type, price, MIN_PRICE, syncValuesTypePrice);
 
   // синхронизация значений количества комнат и гостей
-  var roomNumber = window.form.elements.room_number;
-  var capacity = window.form.elements.capacity;
+  var roomNumber = form.elements.room_number;
+  var capacity = form.elements.capacity;
   var GUESTS_OF_ROOM = {
     1: '0',
     2: '3',
@@ -63,8 +62,10 @@
   synchronizeFields(roomNumber, capacity, GUESTS_OF_ROOM, syncValuesRoomCapacity);
 
   // Сбрасываем значения при отправке
-  window.form.addEventListener('submit', function (evt) {
+  form.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    window.form.reset();
+    form.reset();
   });
+  return form;
+  
 })(window.synchronizeFields);

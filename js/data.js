@@ -1,6 +1,6 @@
 'use strict';
 
-(function (renderPins) {
+window.data = (function (renderPins, map, load, filterAdverts, debounce) {
 
   window.URL = 'https://intensive-javascript-server-kjgvxfepjl.now.sh/keksobooking/data';
   var originData = [];
@@ -13,16 +13,17 @@
     window.advertArr = data.slice(0, 3);
     renderPins(window.advertArr);
   }
-  window.load(URL, onLoad);
+  load(URL, onLoad);
 
   var tokyofilters = document.querySelector('.tokyo__filters');
 
   tokyofilters.addEventListener('change', function () {
-    window.advertArr = window.filterAdverts(originData);
+    window.advertArr = filterAdverts(originData);
     for (var i = 0; i < window.addedPins.length; i++) {
-      window.map.removeChild(window.addedPins[i]);
+      map.removeChild(window.addedPins[i]);
     }
 
-    window.debounce(window.renderPins.bind(null, window.advertArr));
+    debounce(renderPins.bind(null, window.advertArr));
   });
-})(window.renderPins);
+
+})(window.renderPins, window.map, window.load, window.filterAdverts, window.debounce);

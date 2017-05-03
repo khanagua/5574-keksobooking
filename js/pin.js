@@ -1,6 +1,6 @@
 'use strict';
 
-window.renderPins = (function () {
+window.renderPins = (function (map) {
   // отрисовываем элементы
   /**
   * Сгенерировать пин
@@ -9,7 +9,7 @@ window.renderPins = (function () {
   * @return {DOM-object}
   */
   function createPin(advert, advertIndex) {
-    var pinTemplate = window.map.querySelector('.pin');
+    var pinTemplate = map.querySelector('.pin');
     var pin = pinTemplate.cloneNode(true);
     pin.setAttribute('style', 'left: ' + (advert.location.x - 40 / 2) + 'px; top: ' + (advert.location.y - 40) + 'px');
     pin.classList.remove('pin__main');
@@ -41,8 +41,8 @@ window.renderPins = (function () {
   * @return {DOM-object}
   */
   var renderPins = function (data) {
-    return window.map.appendChild(renderFragment(data));
+    return map.appendChild(renderFragment(data));
   };
 
   return renderPins;
-})();
+})(window.map);

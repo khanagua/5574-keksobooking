@@ -10,9 +10,9 @@ window.debounce = (function () {
   */
   var debounce = function (callback) {
     if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
+      clearTimeout(lastTimeout);
     }
-    lastTimeout = window.setTimeout(callback, DEBOUNCE_INTERVAL);
+    lastTimeout = setTimeout(callback, DEBOUNCE_INTERVAL);
   };
   return debounce;
 })();
