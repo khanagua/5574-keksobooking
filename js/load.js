@@ -39,7 +39,7 @@ window.load = (function () {
 
     xhr.open('GET', URL);
     xhr.send();
-  };
+  }
 
   /**
   * Обработать отрицательный ответ с сервера
